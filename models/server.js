@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
-
+const cors = require('cors');
 
 class Server {
 
@@ -13,7 +13,7 @@ class Server {
         //endPoint
         this.endPoint = {
             usuarios: '/api/usuarios',
-            login: 'api/login'
+            login: '/api/login'
         };
 
         this.middlewares();
@@ -26,12 +26,12 @@ class Server {
         this.app.use(bodyParser.urlencoded({ extended: true }));
         this.app.use(bodyParser.json());
         this.app.use(express.json());
+        this.app.use(cors());
     }
 
     router() {
-
-        this.app(this.endPoint.usuarios, require('../router/usuarios'));
-    }
+        this.app.use(this.endPoint.usuarios,require('../router/usuarios'));
+        }
 
     listend() {
         this.app.listen(this.port, () => {
